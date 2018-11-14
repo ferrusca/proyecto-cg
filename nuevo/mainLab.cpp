@@ -2269,9 +2269,9 @@ void fachada()
 				fig7.prisma(3,4,1,piedra.GLindex); // parte arriba ventana	
 			glPopMatrix();
 			glPushMatrix();
-				glTranslatef(-2,-6.5,0);
+				glTranslatef(2,-6.5,0);
 				glRotatef(giroPuerta,0,1,0);
-				glTranslatef(2,0,0);
+				glTranslatef(-2,0,0);
 				fig7.prisma(10,4,0,puertacuartos.GLindex); //puerta entre cuartos
 			glPopMatrix();
 				glTranslatef(7.5,-0.5,0);
