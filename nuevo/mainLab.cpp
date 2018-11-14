@@ -252,6 +252,7 @@ CTexture pisomadera;
 CTexture calabaza;
 CTexture fantasma;
 CTexture picado2;
+CTexture cempa;
 
 //CTexture tree;
 
@@ -573,6 +574,10 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	picado2.LoadTGA("textures/picado2.tga");
 	picado2.BuildGLTexture();
 	picado2.ReleaseImage();
+
+	cempa.LoadTGA("textures/cempa.tga");
+	cempa.BuildGLTexture();
+	cempa.ReleaseImage();
 
 	/*for(int i=0; i<MAX_FRAMES; i++)
 >>>>>>> 1ad99b980d6a1573e4d938aa7c9d270acde0291e
@@ -928,23 +933,34 @@ void ofrenda(void) {
 				glPushMatrix();//base3
 					glTranslatef(0, 5, -1);
 					glPushMatrix();//fotografia
-						glTranslatef(0.0, 4, -0.2);
+						glTranslatef(0.0, 9, -0.2);
 						glScalef(5, 12.5, 0.1);
 						glRotatef(90, 1, 0, 0);
 						figures.u_prisma(foto.GLindex);///cambiar t_foto
 					glPopMatrix();//fin fotografia
 					glPushMatrix();//panes y cosas de la base 3 de arriba
 						glTranslatef(-1.7, 0.8, 0.0);
-						glRotatef(-90, 0, 0, 1);
+						//glRotatef(-90, 0, 0, 1);
 						glEnable(GL_ALPHA_TEST);
+						//glScalef(4, 5, 0.0);
+						glTranslatef(8.0, -1.5, 3.0);//(-y, x, z)
+						glPushMatrix();
+							glTranslatef(-13.0, 0, 0);//(-y, x, z)
+							glAlphaFunc(GL_GREATER, 0.1);
+							glEnable(GL_BLEND);
+							glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+							fig7.prisma(4,7,0,cempa.GLindex);
+							glDisable(GL_BLEND);
+							glDisable(GL_ALPHA_TEST);
+						glPopMatrix();
+						//glRotatef(90,0,0,1);
 						glAlphaFunc(GL_GREATER, 0.1);
 						glEnable(GL_BLEND);
 						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-						glScalef(4, 5, 0.0);
-						glTranslatef(0.0, 2.6, 0.0);//(-y, x, z)
+						fig7.prisma(4,7,0,cempa.GLindex);
 						glDisable(GL_BLEND);
 						glDisable(GL_ALPHA_TEST);
-						glPopMatrix();//fin de panes y cosas de la base 3
+					glPopMatrix();//fin de panes y cosas de la base 3
 
 						glScalef(10, 5, 5); //t3
 						glRotatef(90, 1, 0, 0);
