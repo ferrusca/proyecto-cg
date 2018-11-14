@@ -12,6 +12,7 @@
 #include "figuras.h"
 #include "FigPropias.h"
 
+
 //	Prototipos de funciones
 void fachada();
 void silla();
@@ -38,6 +39,13 @@ float movBrazoIzq = 0.0;
 float giroMonito = 0;
 float movBrazoDer = 0.0;
 float movCuerpo = 0.0;
+
+// variables para fantasma
+float movfantX = 0;
+float movfantY = 0;
+bool animac = true;
+bool animac2 = false;
+float grados = 0;
 
 #define MAX_FRAMES 200		//cuantos cuadros clave se van a utilizar (keyframes)
 int i_max_steps = 90;
@@ -152,9 +160,9 @@ float xx=0.0, yy = 0.0, zz = 0.0;
 float tamx = 1.0, tamy = 1.0, tamz = 1.0;
 
 //	Variables para animar a la paloma
-GLfloat pos_paloma_x = -7.f;
-GLfloat pos_paloma_y = 7.f;
-GLfloat pos_paloma_z = -7.f;
+GLfloat pos_paloma_x = 0.f;
+GLfloat pos_paloma_y = 15.f;
+GLfloat pos_paloma_z = -13.f;
 GLfloat rot_paloma = 0.f;
 GLfloat ant_pos_paloma_z = 0.f;
 
@@ -239,6 +247,8 @@ CTexture frank;
 CTexture pielfrank;
 CTexture bosque2;
 CTexture pisomadera;
+CTexture calabaza;
+CTexture fantasma;
 
 //CTexture tree;
 
@@ -540,6 +550,14 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	pisomadera.BuildGLTexture();
 	pisomadera.ReleaseImage();
 
+	calabaza.LoadTGA("textures/calabaza.tga");
+	calabaza.BuildGLTexture();
+	calabaza.ReleaseImage();
+
+	fantasma.LoadTGA("textures/fantasma.tga");
+	fantasma.BuildGLTexture();
+	fantasma.ReleaseImage();
+
 	/*for(int i=0; i<MAX_FRAMES; i++)
 	{
 		KeyFrame[i].mov_pelotaX = 0;
@@ -591,43 +609,43 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	*/
 
 	//frameindex 0
-	KeyFrame[0].giroVentana = 0.000000; 
+	//KeyFrame[0].giroVentana = 0.000000; 
 	KeyFrame[0].giroPuerta = 0.000000; 
 	KeyFrame[0].posX = 4.000000; 
 	KeyFrame[0].posY = 0.000000; 
 	KeyFrame[0].posZ = -4.000000; 
 	//frameindex 1
-	KeyFrame[1].giroVentana = 0.000000; 
+	//KeyFrame[1].giroVentana = 0.000000; 
 	KeyFrame[1].giroPuerta = -93.000000; 
 	KeyFrame[1].posX = 4.000000; 
 	KeyFrame[1].posY = 0.000000; 
 	KeyFrame[1].posZ = -4.000000; 
 	//frameindex 2
-	KeyFrame[2].giroVentana = 0.000000; 
+	//KeyFrame[2].giroVentana = 0.000000; 
 	KeyFrame[2].giroPuerta = -93.000000; 
 	KeyFrame[2].posX = -0.200001; 
 	KeyFrame[2].posY = 0.000000; 
 	KeyFrame[2].posZ = -4.000000; 
 	//frameindex 3
-	KeyFrame[3].giroVentana = 0.000000; 
+	//KeyFrame[3].giroVentana = 0.000000; 
 	KeyFrame[3].giroPuerta = -93.000000; 
 	KeyFrame[3].posX = -0.200001; 
 	KeyFrame[3].posY = 0.000000; 
 	KeyFrame[3].posZ = 3.400001; 
 	//frameindex 4
-	KeyFrame[4].giroVentana = 0.000000; 
+	//KeyFrame[4].giroVentana = 0.000000; 
 	KeyFrame[4].giroPuerta = -93.000000; 
 	KeyFrame[4].posX = -0.200001; 
 	KeyFrame[4].posY = 0.000000; 
 	KeyFrame[4].posZ = -4.000000; 
 	//frameindex 5
-	KeyFrame[5].giroVentana = 0.000000; 
+	//KeyFrame[5].giroVentana = 0.000000; 
 	KeyFrame[5].giroPuerta = -93.000000; 
 	KeyFrame[5].posX = 5.199999; 
 	KeyFrame[5].posY = 0.000000; 
 	KeyFrame[5].posZ = -4.000000; 
 	//frameindex 6
-	KeyFrame[6].giroVentana = 0.000000; 
+	//KeyFrame[6].giroVentana = 0.000000; 
 	KeyFrame[6].giroPuerta = 0.000000; 
 	KeyFrame[6].posX = 4.000000; 
 	KeyFrame[6].posY = 0.000000; 
@@ -785,6 +803,24 @@ void monito()
 	glPopMatrix();
 }
 
+void crearFantasma(){
+	glPushMatrix();
+		glTranslatef(0,13,-17);
+		glTranslatef(movfantX,movfantY,0);
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.1);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		int num=rand()%100;
+		if (num < 51)
+		{
+			fig7.prisma(7, 7, 0, fantasma.GLindex); //fantasma
+		}
+		glDisable(GL_ALPHA_TEST);
+		glDisable(GL_BLEND);
+	glPopMatrix();
+
+}
 
 
 void cama(void){
@@ -867,7 +903,8 @@ void display ( void )   // Creamos la funcion donde se dibuja
 	
 	glLoadIdentity();
 	
-		
+	srand(time(NULL));
+
 	glPushMatrix();
 		glRotatef(g_lookupdown,1.0f,0,0);
 
@@ -913,7 +950,7 @@ void display ( void )   // Creamos la funcion donde se dibuja
 					glTranslatef(0,0,-17.95);
 					fig7.prisma(22,26,0,bosque2.GLindex); //sustos - fondo
 				glPopMatrix();
-				glTranslatef(0,.1,-9);
+				glTranslatef(0,.2,-9);
 				glRotatef(90, 1, 0, 0);
 				fig7.prisma(18,26,0,pisomadera.GLindex); //sustos - piso
 			glPopMatrix();
@@ -924,14 +961,21 @@ void display ( void )   // Creamos la funcion donde se dibuja
 				monito();
 			glPopMatrix();
 
+			glPushMatrix();
+				crearFantasma();
+			glPopMatrix();
+
 			glPushMatrix(); //puerta entrada y garage
 				puertas();
 			glPopMatrix();
 
+
 			glPushMatrix(); //pelota
+			glEnable(GL_LIGHTING);
 			glTranslatef(pos_ball_x, pos_ball_y, pos_ball_z);
 			glRotatef(rot_ball_x, 1, 0, 0);
 			figures.u_esfera(1, 20, 20, ball.GLindex);
+			glDisable(GL_LIGHTING);
 			glPopMatrix();			
 
 			glPushMatrix();
@@ -940,13 +984,20 @@ void display ( void )   // Creamos la funcion donde se dibuja
 
 			glPushMatrix();
 				
-				glTranslatef(30 + mov_pelotaX, 2 + mov_pelotaY, 10 + mov_pelotaZ);
+				glTranslatef(-10, 2.7, -14);
 				glRotatef(rot_pelotaX, 1, 0, 0);
 				glRotatef(rot_pelotaY, 0, 1, 0);
 				glRotatef(rot_pelotaZ, 0, 0, 1);
-				//glEnable(GL_LIGHTING);
-				figures.u_esfera(2, 20, 20, ball_basq.GLindex);
-				//glDisable(GL_LIGHTING);
+				glEnable(GL_LIGHTING);
+				glEnable(GL_ALPHA_TEST);
+					glAlphaFunc(GL_GREATER,0.1);
+					glEnable(GL_BLEND);
+					glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+					glRotatef(90, 0, 1, 0);
+					fig7.esfera(2, 20, 20, calabaza.GLindex);
+					glDisable(GL_BLEND);
+					glDisable(GL_ALPHA_TEST);
+				glDisable(GL_LIGHTING);
 			glPopMatrix();		
 
 		glPopMatrix(); 
@@ -959,41 +1010,82 @@ void display ( void )   // Creamos la funcion donde se dibuja
 void animacion()
 {
 
+
+	if(animac) {
+		movfantX += 0.02;
+		grados++;
+		movfantY = 6*(sin((grados*PI)/180));
+		if (movfantX > 9) {
+			animac = false;
+			animac2 = true;
+		}
+	}
+	if (animac2) {
+		movfantX -= 0.02;
+		grados++;
+		movfantY = 6*(sin((grados*PI)/180));
+		if (movfantX < -9) {
+			animac2 = false;
+			animac = true;
+		}
+	}
+
 	//Animación paloma
 	switch (estadopaloma)
 	{
 		case 1:
-			pos_paloma_z += 0.1;
-			if(pos_paloma_z >= 7)
+			giroVentana -= 1;
+			//pos_paloma_z += 0.1;
+			if(giroVentana <= -90)
 			{
 				estadopaloma = 2;
-				ant_pos_paloma_z = pos_paloma_z;
+				//ant_pos_paloma_z = pos_paloma_z;
 			}
 			break;
 		case 2:
-			pos_paloma_x += 0.1;
-			rot_paloma = 90;
-			if(pos_paloma_x >= 7)
+			pos_paloma_z += 0.1;
+			//pos_paloma_x += 0.1;
+			//rot_paloma = 90;
+			if(pos_paloma_z >= 7)
 			{
 				estadopaloma = 3;
-				ant_pos_paloma_z = pos_paloma_z;
+				//ant_pos_paloma_z = pos_paloma_z;
 			}
 			break;
 		case 3:
-			pos_paloma_z -= 0.1;
-			rot_paloma = 180;
-			if(pos_paloma_z <= -7)
+			rot_paloma += 2;
+			//pos_paloma_z -= 0.1;
+			if(rot_paloma >= 180)
 			{
 				estadopaloma = 4;
 			}
 			break;
 		case 4:
-			pos_paloma_x -= 0.1;
-			rot_paloma += 3;
-			if(pos_paloma_x <= -7)
+			pos_paloma_z -= 0.1;
+			//pos_paloma_x -= 0.1;
+			//rot_paloma += 3;
+			if(pos_paloma_z <= -7)
 			{
-				rot_paloma = 0;
-				estadopaloma = 1;
+				//rot_paloma = 0;
+				estadopaloma = 5;
+			}
+			break;
+		case 5:
+			rot_paloma -= 2;
+			//pos_paloma_x -= 0.1;
+			//rot_paloma += 3;
+			if(rot_paloma <= 0)
+			{
+				estadopaloma = 6;
+			}
+			break;
+		case 6:
+			giroVentana += 2;
+			//pos_paloma_x -= 0.1;
+			//rot_paloma += 3;
+			if(giroVentana >= 0)
+			{
+				estadopaloma = 0;
 			}
 			break;
 	}
@@ -1378,6 +1470,17 @@ void keyboard ( unsigned char key, int x, int y )  // Create Keyboard Function
 	case 'M':
 		giroPuerta--;
 		//printf("giroPuerta: %f \n", giroPuerta);
+		break;
+	case 'o':
+		animac^=true;
+		//printf("%f \n", posX);
+		break;
+	case 'O':
+		estadopaloma=1;
+		rot_paloma=0;
+		pos_paloma_z=-13;
+		giroVentana=0;
+		//printf("%f \n", posX);
 		break;
 	case 27:        // Cuando Esc es presionado...
 		exit ( 0 );   // Salimos del programa
