@@ -226,6 +226,10 @@ CTexture puertacuartos;
 CTexture ventanacuartos;
 CTexture puerta3;
 CTexture puerta4;
+CTexture foto;
+
+
+CTexture picado1;
 
 //CTexture tree;
 
@@ -489,6 +493,14 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	puerta4.BuildGLTexture();
 	puerta4.ReleaseImage();
 
+	picado1.LoadTGA("textures/picadoTransparente.tga");
+	picado1.BuildGLTexture();
+	picado1.ReleaseImage();
+
+	foto.LoadTGA("textures/epn.tga");
+	foto.BuildGLTexture();
+	foto.ReleaseImage();
+
 	for(int i=0; i<MAX_FRAMES; i++)
 	{
 		KeyFrame[i].mov_pelotaX = 0;
@@ -732,6 +744,129 @@ void cama(void){
 
 }
 
+void ofrenda(void) {
+
+	
+	//base
+	glPushMatrix();
+		glScalef(0.49, 0.3, 0.4);
+		glPushMatrix(); 
+			glRotatef(270, 0, 1, 0);
+			glTranslatef(25, 0, -20);
+			glPushMatrix(); //mediano
+				glTranslatef(0, 7, -0.5);
+				glPushMatrix();//base3
+					glTranslatef(0, 5, -1);
+					glPushMatrix();//fotografia
+						glTranslatef(0.0, 4, -0.2);
+						glScalef(5, 12.5, 0.1);
+						glRotatef(90, 1, 0, 0);
+						figures.u_prisma(foto.GLindex);///cambiar t_foto
+					glPopMatrix();//fin fotografia
+					glPushMatrix();//panes y cosas de la base 3 de arriba
+						glTranslatef(-1.7, 0.8, 0.0);
+						glRotatef(-90, 0, 0, 1);
+						glEnable(GL_ALPHA_TEST);
+						glAlphaFunc(GL_GREATER, 0.1);
+						glEnable(GL_BLEND);
+						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+						glScalef(4, 5, 0.0);
+						glTranslatef(0.0, 2.6, 0.0);//(-y, x, z)
+						glDisable(GL_BLEND);
+						glDisable(GL_ALPHA_TEST);
+						glPopMatrix();//fin de panes y cosas de la base 3
+
+						glScalef(10, 5, 5); //t3
+						glRotatef(90, 1, 0, 0);
+						figures.u_prisma(madera.GLindex);
+					glPopMatrix();//fin base3
+					//panes y cosas de la base 2 de enmedio
+					glPushMatrix();
+						glTranslatef(-2.7, 0.7, 1.35);
+						glRotatef(-90, 0, 0, 1);
+						glEnable(GL_ALPHA_TEST);
+						glAlphaFunc(GL_GREATER, 0.1);
+						glEnable(GL_BLEND);
+						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+						glScalef(4, 4, 0.0);//(y.x.z) t2
+						glTranslatef(0.0, 4.0, 0.0);//(-y, x, z)
+						glTranslatef(0.0, -2.0, 0.0);//(-y, x, z)
+						glDisable(GL_BLEND);
+						glDisable(GL_ALPHA_TEST);
+					glPopMatrix();
+
+					glPushMatrix();
+	glTranslatef(-2.9, 0.8, -1.3);
+	glRotatef(-90, 0, 0, 1);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glScalef(0.7, 1.5, 0.0);//(y.x.z)
+	glTranslatef(0.0, 4.0, 0.0);//(-y, x, z)
+	glDisable(GL_BLEND);
+	glDisable(GL_ALPHA_TEST);
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(-2.5, 0.8, 0.7);
+	glRotatef(-90, 0, 0, 1);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glScalef(0.7, 1.2, 0.0);//(y.x.z)
+	glTranslatef(0.0, 4.0, 0.0);//(-y, x, z)
+	glDisable(GL_BLEND);
+	glDisable(GL_ALPHA_TEST);
+	glPopMatrix();
+
+	//fin de panes y cosas de la base 2
+
+
+
+	glScalef(15, 5, 5);
+	glRotatef(90, 1, 0, 0);
+	figures.u_prisma(madera.GLindex);
+	glPopMatrix();//fin base2
+
+	glPushMatrix();//panes y cosas de la base 1 de hasta abajo
+	glTranslatef(-4.3, 0.8, 1.5);
+	glRotatef(-90, 0, 0, 1);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glScalef(0.7, 2.0, 0.0);//(y.x.z)
+	glTranslatef(0.0, 4.3, 0.0);//(-y, x, z)
+	glTranslatef(0.0, -2.3, 0.0);//(-y, x, z)
+	glDisable(GL_BLEND);
+	glDisable(GL_ALPHA_TEST);
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(-4.3, 1.0, 0.5);
+	glRotatef(-90, 0, 0, 1);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glScalef(0.7, 2.2, 0.0);//(y.x.z)
+	glTranslatef(0.0, 4.0, 0.0);//(-y, x, z)
+	glDisable(GL_BLEND);
+	glDisable(GL_ALPHA_TEST);
+	glPopMatrix();
+
+	//fin de panes y cosas de la base1
+
+	glScalef(23, 7, 7); //te uno
+	glRotatef(90, 1, 0, 0);
+	figures.prisma(madera.GLindex, picado1.GLindex);
+	glPopMatrix();//fin base1
+
+	glPopMatrix();
+}
+
 void display ( void )   // Creamos la funcion donde se dibuja
 {
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -773,11 +908,15 @@ void display ( void )   // Creamos la funcion donde se dibuja
 			glPushMatrix(); //fachada
 				fachada();
 			glPopMatrix();
+
 			
 			glPushMatrix(); //puerta entrada y garage
 				puertas();
 			glPopMatrix();
 
+			glPushMatrix(); //fachada
+				ofrenda();
+			glPopMatrix();			
 			glPushMatrix(); //pelota
 			glTranslatef(pos_ball_x, pos_ball_y, pos_ball_z);
 			glRotatef(rot_ball_x, 1, 0, 0);
