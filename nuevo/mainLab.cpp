@@ -932,7 +932,7 @@ void ofrenda(void) {
 		glScalef(0.49, 0.3, 0.4);
 		glPushMatrix(); 
 			glRotatef(270, 0, 1, 0);
-			glTranslatef(25, 0, -20);
+			glTranslatef(25, 3, -20);
 			glPushMatrix(); //mediano
 				glTranslatef(0, 7, -0.5);
 				glPushMatrix();//base3
@@ -989,14 +989,15 @@ void ofrenda(void) {
 					//panes y cosas de la base 2 de enmedio
 					glPushMatrix();
 						glTranslatef(-2.7, 0.7, 1.35);
-						glRotatef(-90, 0, 0, 1);
+						//glRotatef(-90, 0, 0, 1);
 						glEnable(GL_ALPHA_TEST);
 						glAlphaFunc(GL_GREATER, 0.1);
 						glEnable(GL_BLEND);
 						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 						glScalef(4, 4, 0.0);//(y.x.z) t2
-						glTranslatef(0.0, 4.0, 0.0);//(-y, x, z)
-						glTranslatef(0.0, -2.0, 0.0);//(-y, x, z)
+						glTranslatef(0.0, 1.0, 8.0);//(-y, x, z)
+						//glTranslatef(0.0, -2.0, 5.0);//(-y, x, z)
+						figures.u_prisma(cempa.GLindex);
 						glDisable(GL_BLEND);
 						glDisable(GL_ALPHA_TEST);
 					glPopMatrix();
@@ -1460,7 +1461,7 @@ void keyboard ( unsigned char key, int x, int y )  // Create Keyboard Function
 		//Tecla para colocar la camara en la cama
 		case 'c':
 		case 'C':
-			objCamera.Position_Camera(10, 3, 16, 10, 3, 12, 0, 1, 0);
+			objCamera.Position_Camera(0, 3, 10, 0, 3, 6, 0, 1, 0);
 			break;
 
 		//Tecla para colocar la camara en la esquina para ver el interior de la casa
@@ -1472,6 +1473,8 @@ void keyboard ( unsigned char key, int x, int y )  // Create Keyboard Function
 
 		//Tecla para colocar la camara en una vista isometrica de la casa
 		case 'i':
+			objCamera.Position_Camera(-12.4, 3, -4, 12.4, 3, -15, 0, 1, 0);
+			break;
 		case 'I':
 			objCamera.Position_Camera(-23.94, 58.5f, 16.99, -5, 2.5f, -12.39, 0, 1, 0);
 			break;
