@@ -256,6 +256,8 @@ CTexture picado2;
 CTexture cempa;
 CTexture panmuerto;
 CTexture veladora;
+CTexture cala;
+CTexture caguama;
 
 //CTexture tree;
 
@@ -593,6 +595,15 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	azucar.LoadTGA("textures/azucar.tga");
 	azucar.BuildGLTexture();
 	azucar.ReleaseImage();
+
+	cala.LoadTGA("textures/cala.tga");
+	cala.BuildGLTexture();
+	cala.ReleaseImage();
+
+	caguama.LoadTGA("textures/caguama.tga");
+	caguama.BuildGLTexture();
+	caguama.ReleaseImage();
+
 
 
 	/*for(int i=0; i<MAX_FRAMES; i++)
@@ -989,10 +1000,16 @@ void ofrenda(void) {
 						glEnable(GL_ALPHA_TEST);
 						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 						fig7.prisma(4,7,0,cempa.GLindex); // flor de cempasuchil 1
-						glTranslatef(-5, -5, 1);
-						fig7.prisma(6,6,0,veladora.GLindex); // flor de cempasuchil 1
-						glTranslatef(5, 0, 0);
-						fig7.prisma(4,4,0,azucar.GLindex); // flor de cempasuchil 1
+						glTranslatef(-5, -4, 1);
+						fig7.prisma(6,6,0,veladora.GLindex); // veladora
+						glPushMatrix();
+							glTranslatef(5, -1, 0);
+							fig7.prisma(4,4,0,azucar.GLindex); // calavera de azucar
+						glPopMatrix();
+						glPushMatrix();
+							glTranslatef(-5, 0, 0);
+							fig7.prisma(7,4,0,caguama.GLindex); // caguama
+						glPopMatrix();
 						glDisable(GL_BLEND);
 						glDisable(GL_ALPHA_TEST);
 					glPopMatrix();//fin de panes y cosas de la base 3
