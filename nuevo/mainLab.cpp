@@ -251,6 +251,7 @@ CTexture bosque2;
 CTexture pisomadera;
 CTexture calabaza;
 CTexture fantasma;
+CTexture picado2;
 
 //CTexture tree;
 
@@ -568,6 +569,10 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	fantasma.LoadTGA("textures/fantasma.tga");
 	fantasma.BuildGLTexture();
 	fantasma.ReleaseImage();
+
+	picado2.LoadTGA("textures/picado2.tga");
+	picado2.BuildGLTexture();
+	picado2.ReleaseImage();
 
 	/*for(int i=0; i<MAX_FRAMES; i++)
 >>>>>>> 1ad99b980d6a1573e4d938aa7c9d270acde0291e
@@ -1026,7 +1031,13 @@ void ofrenda(void) {
 
 	glScalef(23, 7, 7); //te uno
 	glRotatef(90, 1, 0, 0);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.1);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	figures.prisma(madera.GLindex, picado1.GLindex);
+	glDisable(GL_BLEND);
+	glDisable(GL_ALPHA_TEST);
 	glPopMatrix();//fin base1
 
 	glPopMatrix();
@@ -1085,9 +1096,21 @@ void display ( void )   // Creamos la funcion donde se dibuja
 					glTranslatef(0,0,-17.95);
 					fig7.prisma(22,26,0,bosque2.GLindex); //sustos - fondo
 				glPopMatrix();
+				glPushMatrix();
+					glTranslatef(-12.8,15,9);
+					glRotatef(90, 0, 1, 0);
+					glEnable(GL_ALPHA_TEST);
+					glAlphaFunc(GL_GREATER,0.1);
+					glEnable(GL_BLEND);
+					glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+					fig7.prisma(15,18,0,picado2.GLindex); //ofrenda - fondo
+					glDisable(GL_BLEND);
+					glDisable(GL_ALPHA_TEST);
+				glPopMatrix();
 				glTranslatef(0,.2,-9);
 				glRotatef(90, 1, 0, 0);
 				fig7.prisma(18,26,0,pisomadera.GLindex); //sustos - piso
+
 			glPopMatrix();
 
 			glPushMatrix(); //frank
@@ -1128,13 +1151,13 @@ void display ( void )   // Creamos la funcion donde se dibuja
 				glRotatef(rot_pelotaZ, 0, 0, 1);
 				glEnable(GL_LIGHTING);
 				glEnable(GL_ALPHA_TEST);
-					glAlphaFunc(GL_GREATER,0.1);
-					glEnable(GL_BLEND);
-					glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-					glRotatef(90, 0, 1, 0);
-					fig7.esfera(2, 20, 20, calabaza.GLindex);
-					glDisable(GL_BLEND);
-					glDisable(GL_ALPHA_TEST);
+				glAlphaFunc(GL_GREATER,0.1);
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+				glRotatef(90, 0, 1, 0);
+				fig7.esfera(2, 20, 20, calabaza.GLindex);
+				glDisable(GL_BLEND);
+				glDisable(GL_ALPHA_TEST);
 				glDisable(GL_LIGHTING);
 			glPopMatrix();		
 
