@@ -253,6 +253,7 @@ CTexture calabaza;
 CTexture fantasma;
 CTexture picado2;
 CTexture cempa;
+CTexture panmuerto;
 
 //CTexture tree;
 
@@ -578,6 +579,10 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	cempa.LoadTGA("textures/cempa.tga");
 	cempa.BuildGLTexture();
 	cempa.ReleaseImage();
+
+	panmuerto.LoadTGA("textures/panmuerto.tga");
+	panmuerto.BuildGLTexture();
+	panmuerto.ReleaseImage();
 
 	/*for(int i=0; i<MAX_FRAMES; i++)
 >>>>>>> 1ad99b980d6a1573e4d938aa7c9d270acde0291e
@@ -941,23 +946,38 @@ void ofrenda(void) {
 					glPushMatrix();//panes y cosas de la base 3 de arriba
 						glTranslatef(-1.7, 0.8, 0.0);
 						//glRotatef(-90, 0, 0, 1);
-						glEnable(GL_ALPHA_TEST);
 						//glScalef(4, 5, 0.0);
 						glTranslatef(8.0, -1.5, 3.0);//(-y, x, z)
 						glPushMatrix();
 							glTranslatef(-13.0, 0, 0);//(-y, x, z)
 							glAlphaFunc(GL_GREATER, 0.1);
 							glEnable(GL_BLEND);
+							glEnable(GL_ALPHA_TEST);
 							glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-							fig7.prisma(4,7,0,cempa.GLindex);
+							fig7.prisma(4,7,0,cempa.GLindex); // flor de cempasuchil 2 
+							glDisable(GL_BLEND);
+							glDisable(GL_ALPHA_TEST);
+						glPopMatrix();
+						glPushMatrix();
+							glTranslatef(-4.0, 0, 0);//(-y, x, z)
+							//glRotatef(-90,1,0,0);
+							glAlphaFunc(GL_GREATER, 0.1);
+							glEnable(GL_BLEND);
+							glEnable(GL_ALPHA_TEST);
+							glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+							//figures.u_media_esfera(2,20,20,panmuerto.GLindex);
+							fig7.prisma(3,3,0,panmuerto.GLindex); // pan de muerto 
+							glTranslatef(-4.0, 0, 0);
+							fig7.prisma(3,3,0,panmuerto.GLindex); // pan de muerto 
 							glDisable(GL_BLEND);
 							glDisable(GL_ALPHA_TEST);
 						glPopMatrix();
 						//glRotatef(90,0,0,1);
 						glAlphaFunc(GL_GREATER, 0.1);
 						glEnable(GL_BLEND);
+						glEnable(GL_ALPHA_TEST);
 						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-						fig7.prisma(4,7,0,cempa.GLindex);
+						fig7.prisma(4,7,0,cempa.GLindex); // flor de cempasuchil 1
 						glDisable(GL_BLEND);
 						glDisable(GL_ALPHA_TEST);
 					glPopMatrix();//fin de panes y cosas de la base 3
