@@ -224,6 +224,8 @@ CTexture skyboxparedes;
 CTexture piedra;
 CTexture puertacuartos;
 CTexture ventanacuartos;
+CTexture puerta3;
+CTexture puerta4;
 
 //CTexture tree;
 
@@ -479,6 +481,14 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	ventanacuartos.BuildGLTexture();
 	ventanacuartos.ReleaseImage();
 
+	puerta3.LoadTGA("textures/puerta3.tga");
+	puerta3.BuildGLTexture();
+	puerta3.ReleaseImage();
+
+	puerta4.LoadTGA("textures/puerta4.tga");
+	puerta4.BuildGLTexture();
+	puerta4.ReleaseImage();
+
 	for(int i=0; i<MAX_FRAMES; i++)
 	{
 		KeyFrame[i].mov_pelotaX = 0;
@@ -509,80 +519,23 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 
 void puertas(void){
 
-	//Puerta Frontal
+	//Puerta frontal
 	glPushMatrix();
-		glTranslatef(4.8, 5.0, 18.005);
-		glPushMatrix();  //arco madera izq
-			glTranslatef(-3, 2, 0);
-			glScalef(2, 14, 1);
-			glBindTexture(GL_TEXTURE_2D, madera.GLindex);
-			
-			glBegin(GL_QUADS);
-				glTexCoord2f(1, 0); glVertex3f(0.5, -0.5, 0.5);
-				glTexCoord2f(0, 0); glVertex3f(-0.5, -0.5, 0.5);
-				glTexCoord2f(0, 1); glVertex3f(-0.5, 0.5, 0.5);
-				glTexCoord2f(1, 1); glVertex3f(0.5, 0.5, 0.5);
-			glEnd();
-		glPopMatrix();
-		glPushMatrix(); //arco madera der
-			glTranslatef(6, 2, 0);
-			glScalef(2, 14, 1);
-			glBindTexture(GL_TEXTURE_2D, madera.GLindex);
-			glBegin(GL_QUADS);
-				glTexCoord2f(1, 0); glVertex3f(0.5, -0.5, 0.5);
-				glTexCoord2f(0, 0); glVertex3f(-0.5, -0.5, 0.5);
-				glTexCoord2f(0, 1); glVertex3f(-0.5, 0.5, 0.5);
-				glTexCoord2f(1, 1); glVertex3f(0.5, 0.5, 0.5);
-			glEnd();
-		glPopMatrix();
-		glPushMatrix(); //arco madera sup
-			glTranslatef(1.5, 7.5, 0);
-			glScalef(7, 3, 1);
-			glBindTexture(GL_TEXTURE_2D, madera.GLindex);
-			glBegin(GL_QUADS);
-				glTexCoord2f(1, 0); glVertex3f(0.5, -0.5, 0.5);
-				glTexCoord2f(0, 0); glVertex3f(-0.5, -0.5, 0.5);
-				glTexCoord2f(0, 1); glVertex3f(-0.5, 0.5, 0.5);
-				glTexCoord2f(1, 1); glVertex3f(0.5, 0.5, 0.5);
-			glEnd();
-		glPopMatrix();
-
-		glPushMatrix(); //fondo ladrillo
-			glTranslatef(1.5, 2, 0);
-			glScalef(11, 14, 0);
-			glBindTexture(GL_TEXTURE_2D, fondo_lad.GLindex);
-			glBegin(GL_QUADS);
-				glTexCoord2f(1, 0); glVertex3f(0.5, -0.5, 0.5);
-				glTexCoord2f(0, 0); glVertex3f(-0.5, -0.5, 0.5);
-				glTexCoord2f(0, 1); glVertex3f(-0.5, 0.5, 0.5);
-				glTexCoord2f(1, 1); glVertex3f(0.5, 0.5, 0.5);
-			glEnd();
-		glPopMatrix();
-
-		glPushMatrix();
-			glTranslatef(0, -4.5, 1);
-			glScalef(3, 1 , 2);
-			figures.l_prisma(pared_interior.GLindex);
-		glPopMatrix();
-
-		glScalef(3, 8, 1);
-		glEnable(GL_ALPHA_TEST);
-		glAlphaFunc(GL_GREATER, 0.1);
-		glBindTexture(GL_TEXTURE_2D, puertaFrente.GLindex);
+		glTranslatef(-2.5, 6, 18.005);
+		glScalef(5, 12, 1);
+		glBindTexture(GL_TEXTURE_2D, puerta4.GLindex);
 		glBegin(GL_QUADS);
 			glTexCoord2f(1, 0); glVertex3f(0.5, -0.5, 0.5);
 			glTexCoord2f(0, 0); glVertex3f(-0.5, -0.5, 0.5);
 			glTexCoord2f(0, 1); glVertex3f(-0.5, 0.5, 0.5);
 			glTexCoord2f(1, 1); glVertex3f(0.5, 0.5, 0.5);
 		glEnd();
-		glDisable(GL_ALPHA_TEST);
 	glPopMatrix();
 
-	//Puerta garage
 	glPushMatrix();
-		glTranslatef(-6, 4.5, 18.005);
-		glScalef(12, 9, 1);
-		glBindTexture(GL_TEXTURE_2D, garage.GLindex);
+		glTranslatef(2.5, 6, 18.005);
+		glScalef(5, 12, 1);
+		glBindTexture(GL_TEXTURE_2D, puerta3.GLindex);
 		glBegin(GL_QUADS);
 			glTexCoord2f(1, 0); glVertex3f(0.5, -0.5, 0.5);
 			glTexCoord2f(0, 0); glVertex3f(-0.5, -0.5, 0.5);
@@ -800,12 +753,11 @@ void display ( void )   // Creamos la funcion donde se dibuja
 				glDisable(GL_LIGHTING);
 				glTranslatef(0,29.98,0);
 				glScalef(150, 60, 200);
-				figures.skybox(skyboxparedes.GLindex,skyboxparedes.GLindex , cielo_superior.GLindex, pasto.GLindex);
+				figures.skybox(skyboxparedes.GLindex,skyboxparedes.GLindex , cielo_superior.GLindex, pasto.GLindex); //skybox
 				glEnable(GL_LIGHTING);
 			glPopMatrix();
 
-			//	Ejes de referencia
-			glPushMatrix();
+			glPushMatrix(); //	Ejes de referencia
 				glBegin(GL_LINES);
 				glVertex3f(0.0, 0.0, 0.0);
 				glVertex3f(100.0, 0.0, 0.0);
@@ -823,176 +775,14 @@ void display ( void )   // Creamos la funcion donde se dibuja
 			glPopMatrix();
 			
 			glPushMatrix(); //puerta entrada y garage
-				//puertas();
+				puertas();
 			glPopMatrix();
 
 			glPushMatrix(); //pelota
 			glTranslatef(pos_ball_x, pos_ball_y, pos_ball_z);
 			glRotatef(rot_ball_x, 1, 0, 0);
 			figures.u_esfera(1, 20, 20, ball.GLindex);
-			glPopMatrix();
-
-			glPushMatrix(); //ventana 
-				glTranslatef(7.9, 6, 18);
-				glScalef(2.5, 8.4, 1);
-				figures.ventana(window_texture.GLindex, true, false, false, 
-				false, false, false);
-			glPopMatrix();
-
-			glPushMatrix(); //chimenea
-				glDisable(GL_LIGHTING);
-				glTranslatef(-11.3, 13, -16.8);
-				
-				glPushMatrix(); //estante
-					glTranslatef(7, -9.5, -1);
-					glPushMatrix(); //sillon 1
-						glTranslatef(10.5,-2, 1);
-						glPushMatrix(); //sillon 2
-							glTranslatef(5.5, 0, 5.5);
-							glRotatef(270, 0, 1, 0);
-							glScalef(3,2,2);
-							sillon_uno();
-						glPopMatrix();
-						glPushMatrix(); // mesa centro de la sala
-							glTranslatef(0, .5, 8);
-							glPushMatrix(); //sillón individual
-								glTranslatef(-6, -.5, -2);
-								glRotatef(90, 0, 1, 0);
-								glScalef(2,2,2);
-								sillon_dos();
-							glPopMatrix();
-							glScalef(2,0.5,0.75);
-							//mesa_sala();
-						glPopMatrix();
-						glScalef(3,2,2);
-						sillon_uno();
-					glPopMatrix();
-					glScalef(10, 8, 0);
-					glEnable(GL_ALPHA_TEST);
-					glAlphaFunc(GL_GREATER, 0.1);
-					figures.u_prisma(estante.GLindex);
-					glDisable(GL_ALPHA_TEST);
-				glPopMatrix();
-
-				glScalef(2, 26, 2);
-				figures.u_prisma(pisoPatioT.GLindex);
-				glColor3f(1,1,1);
-				glEnable(GL_LIGHTING);
-			glPopMatrix();
-
-
-			glPushMatrix(); //comedor 
-				//glTranslatef(0,0,34);
-				glPushMatrix(); //silla 1
-					glTranslatef(-7.25, 1 ,-1.5);
-					//glRotatef(-90,0,1,0);
-					glScalef(2,2,2);
-					silla();
-				glPopMatrix();
-
-				glPushMatrix(); //silla 2
-					glTranslatef(-7.25, 1, 4.5);
-					glRotatef(180,0,1,0);
-					glScalef(2,2,2);
-					silla();
-				glPopMatrix();
-
-				glPushMatrix(); //silla 3
-					glTranslatef(-10, 1, 1.5);
-					glRotatef(90,0,1,0);
-					glScalef(2,2,2);
-					silla();
-				glPopMatrix();
-
-				glPushMatrix(); //silla 4
-					glTranslatef(-4.5, 1, 1.5);
-					glRotatef(-90,0,1,0);
-					glScalef(2,2,2);
-					silla();
-				glPopMatrix();
-
-				glPushMatrix(); //mesa central del comedor
-					glTranslatef(-7.2, -1, 1.5);
-					glRotatef(45,0,1,0);
-					glScalef(1.5,1,1.5);
-					mesa_comedor();
-				glPopMatrix();
-				glColor3f(1,1,1);
-			glPopMatrix();
-
-			glPushMatrix(); //cama 
-				cama();
-			glPopMatrix();
-
-			glPushMatrix(); //televisión
-				glTranslatef(10, 4, 10);
-				glRotatef(-90,1,0,0);
-				glPushMatrix(); //mueble que sostiene la television
-					glColor3f(0.3529,0.1764,0.0862);
-					glRotatef(90,1,0,0);
-					glTranslatef(0, -2.8, 0);
-					glScalef(1.6, 3, 0.8);
-					figures.u_prisma_mueble(madera.GLindex,tocador.GLindex);
-					glColor3f(1,1,1);
-				glPopMatrix();
-				if (estadoTelevision >= 1 && estadoTelevision <= 10){
-				figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t1.GLindex);
-				glutPostRedisplay();
-				}
-				else if (estadoTelevision >= 11 && estadoTelevision <= 20){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t2.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 21 && estadoTelevision <= 30){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t3.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 31 && estadoTelevision <= 40){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t4.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 41 && estadoTelevision <= 50){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t5.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 51 && estadoTelevision <= 60){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t6.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 61 && estadoTelevision <= 70){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t7.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 71 && estadoTelevision <= 80){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t8.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 81 && estadoTelevision <= 90){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t9.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 91 && estadoTelevision <= 100){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t10.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 101 && estadoTelevision <= 110){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t11.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 111 && estadoTelevision <= 120){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t12.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 121 && estadoTelevision <= 130){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t13.GLindex);
-					glutPostRedisplay();
-				}	
-				else if (estadoTelevision >= 131 && estadoTelevision <= 140){
-					figures.u_prisma_tele(0.25,2.5,2.5,negroMate.GLindex,t14.GLindex);
-					glutPostRedisplay();
-				}
-			glPopMatrix();
-			
+			glPopMatrix();			
 
 			glPushMatrix();
 				paloma();
@@ -1738,7 +1528,6 @@ void sillon_dos()
 	glScalef(0.3,0.3,0.75);
 	figures.u_prisma(sillon.GLindex);
 	glPopMatrix();
-
 
 	glPushMatrix(); //RESPALDO
 	glTranslatef(0,0.90,-0.375);
