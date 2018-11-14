@@ -707,7 +707,7 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 
 	//	Reproducir música si se está en Windows
 	#if _WIN32
-	PlaySound(TEXT("halo_channel.wav"), NULL, SND_LOOP | SND_ASYNC);
+	PlaySound(TEXT("audio/terror.wav"), NULL, SND_LOOP | SND_ASYNC);
 	#endif
 
 }
