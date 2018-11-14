@@ -934,7 +934,7 @@ void ofrenda(void) {
 			glRotatef(270, 0, 1, 0);
 			glTranslatef(25, 3, -20);
 			glPushMatrix(); //mediano
-				glTranslatef(0, 7, -0.5);
+				glTranslatef(0, 6, -0.5);
 				glPushMatrix();//base3
 					glTranslatef(0, 5, -1);
 					glPushMatrix();//fotografia
@@ -997,7 +997,7 @@ void ofrenda(void) {
 						glScalef(4, 4, 0.0);//(y.x.z) t2
 						glTranslatef(0.0, 1.0, 8.0);//(-y, x, z)
 						//glTranslatef(0.0, -2.0, 5.0);//(-y, x, z)
-						figures.u_prisma(cempa.GLindex);
+						//figures.u_prisma(cempa.GLindex);
 						glDisable(GL_BLEND);
 						glDisable(GL_ALPHA_TEST);
 					glPopMatrix();
