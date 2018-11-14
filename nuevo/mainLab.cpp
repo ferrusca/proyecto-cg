@@ -258,6 +258,7 @@ CTexture panmuerto;
 CTexture veladora;
 CTexture cala;
 CTexture caguama;
+CTexture cara;
 
 //CTexture tree;
 
@@ -603,6 +604,10 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	caguama.LoadTGA("textures/caguama.tga");
 	caguama.BuildGLTexture();
 	caguama.ReleaseImage();
+
+	cara.LoadTGA("textures/cara.tga");
+	cara.BuildGLTexture();
+	cara.ReleaseImage();
 
 
 
@@ -965,6 +970,7 @@ void ofrenda(void) {
 						glRotatef(90, 1, 0, 0);
 						figures.u_prisma(foto.GLindex);///cambiar t_foto
 					glPopMatrix();//fin fotografia
+					glTranslatef(0,0,1);
 					glPushMatrix();//panes y cosas de la base 3 de arriba
 						glTranslatef(-1.7, 0.8, 0.0);
 						//glRotatef(-90, 0, 0, 1);
@@ -1005,6 +1011,10 @@ void ofrenda(void) {
 						glPushMatrix();
 							glTranslatef(5, -1, 0);
 							fig7.prisma(4,4,0,azucar.GLindex); // calavera de azucar
+						glPopMatrix();
+						glPushMatrix();
+							glTranslatef(-1, 16.1, -5);
+							fig7.prisma(5,3,0, cara.GLindex);
 						glPopMatrix();
 						glPushMatrix();
 							glTranslatef(-5, 0, 0);
