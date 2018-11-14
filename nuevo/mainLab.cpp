@@ -2236,10 +2236,20 @@ void fachada()
 	glPushMatrix(); // Pared de enmedio 
 		//fig7.prisma(22,26,1,piedra.GLindex);
 		glTranslatef(-7.5,0,0);
-		fig7.prisma(22,11,1,piedra.GLindex);
+		fig7.prisma(22,11,1,piedra.GLindex); // parte izquierda 
+		glPushMatrix();
+			glTranslatef(0,0,.8);
+			glEnable(GL_ALPHA_TEST);
+			glAlphaFunc(GL_GREATER,0.1);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+			fig7.prisma(20,11,0,cala.GLindex); // adorno calavera 
+			glDisable(GL_ALPHA_TEST);
+			glDisable(GL_BLEND);
+		glPopMatrix();
 		glPushMatrix();
 			glTranslatef(7.5,0.5,0);
-			fig7.prisma(3,4,1,piedra.GLindex);
+			fig7.prisma(3,4,1,piedra.GLindex); // parte en medio entre puerta y venatana
 			glPushMatrix();
 				glTranslatef(-2,4.5,0);
 				glRotatef(giroVentana,0,1,0);
@@ -2256,7 +2266,7 @@ void fachada()
 			glPopMatrix();
 			glPushMatrix();
 				glTranslatef(0,9,0);
-				fig7.prisma(3,4,1,piedra.GLindex);	
+				fig7.prisma(3,4,1,piedra.GLindex); // parte arriba ventana	
 			glPopMatrix();
 			glPushMatrix();
 				glTranslatef(-2,-6.5,0);
@@ -2265,7 +2275,17 @@ void fachada()
 				fig7.prisma(10,4,0,puertacuartos.GLindex); //puerta entre cuartos
 			glPopMatrix();
 				glTranslatef(7.5,-0.5,0);
-				fig7.prisma(22,11,1,piedra.GLindex); 
+				fig7.prisma(22,11,1,piedra.GLindex); // parte derecha
+				glPushMatrix();
+					glTranslatef(0,0,.8);
+					glEnable(GL_ALPHA_TEST);
+					glAlphaFunc(GL_GREATER,0.1);
+					glEnable(GL_BLEND);
+					glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+					fig7.prisma(20,11,0,cala.GLindex);
+					glDisable(GL_ALPHA_TEST);
+					glDisable(GL_BLEND);
+				glPopMatrix();
 			glPushMatrix();
 			glPopMatrix();
 		glPopMatrix();
