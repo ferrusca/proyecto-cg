@@ -238,6 +238,7 @@ CTexture centro_mesa;
 CTexture plata;
 CTexture ball_basq;
 CTexture skyboxparedes;
+CTexture azucar;
 CTexture piedra;
 CTexture puertacuartos;
 CTexture ventanacuartos;
@@ -588,6 +589,10 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	veladora.LoadTGA("textures/veladora.tga");
 	veladora.BuildGLTexture();
 	veladora.ReleaseImage();
+
+	azucar.LoadTGA("textures/azucar.tga");
+	azucar.BuildGLTexture();
+	azucar.ReleaseImage();
 
 
 	/*for(int i=0; i<MAX_FRAMES; i++)
@@ -986,6 +991,8 @@ void ofrenda(void) {
 						fig7.prisma(4,7,0,cempa.GLindex); // flor de cempasuchil 1
 						glTranslatef(-5, -5, 1);
 						fig7.prisma(6,6,0,veladora.GLindex); // flor de cempasuchil 1
+						glTranslatef(5, 0, 0);
+						fig7.prisma(4,4,0,azucar.GLindex); // flor de cempasuchil 1
 						glDisable(GL_BLEND);
 						glDisable(GL_ALPHA_TEST);
 					glPopMatrix();//fin de panes y cosas de la base 3
