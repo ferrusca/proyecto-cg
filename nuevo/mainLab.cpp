@@ -59,6 +59,11 @@ typedef struct _frame
 	float IncRotY;
 	float IncRotZ;
 
+	float giroPuerta;
+	float giroPuertaInc;
+	float giroVentana;
+	float giroVentanaInc;
+
 	/*
 	//Variables para GUARDAR Key Frames
 	float posX;		//Variable para PosicionX
@@ -98,7 +103,7 @@ typedef struct _frame
 }FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
-int FrameIndex = 0;			//introducir datos
+int FrameIndex = 11;			//introducir datos
 bool play = false;
 int playIndex = 0;
 
@@ -124,6 +129,10 @@ float IncY = 0.0;
 float IncRotX = 0.0;
 float IncRotY = 0.0;
 float IncRotZ = 0.0;
+
+// variables para giros
+float giroPuerta = 0;
+float giroVentana = 0;
 
 
 //	Objeto para dibujar figuras
@@ -226,6 +235,8 @@ CTexture puertacuartos;
 CTexture ventanacuartos;
 CTexture puerta3;
 CTexture puerta4;
+CTexture frank;
+CTexture pielfrank;
 
 //CTexture tree;
 
@@ -244,6 +255,8 @@ void saveFrame ( void )
 	KeyFrame[FrameIndex].rot_pelotaX = rot_pelotaX;
 	KeyFrame[FrameIndex].rot_pelotaY = rot_pelotaY;
 	KeyFrame[FrameIndex].rot_pelotaZ = rot_pelotaZ;
+	KeyFrame[FrameIndex].giroVentana = giroVentana;
+	KeyFrame[FrameIndex].giroPuerta = giroPuerta;
 			
 	FrameIndex++;
 }
@@ -266,7 +279,10 @@ void interpolation ( void )
 	KeyFrame[playIndex].IncZ = (KeyFrame[playIndex + 1].mov_pelotaZ - KeyFrame[playIndex].mov_pelotaZ) / i_max_steps;	
 	KeyFrame[playIndex].IncRotX = (KeyFrame[playIndex + 1].rot_pelotaX - KeyFrame[playIndex].rot_pelotaX) / i_max_steps;
 	KeyFrame[playIndex].IncRotY = (KeyFrame[playIndex + 1].rot_pelotaY - KeyFrame[playIndex].rot_pelotaY) / i_max_steps;
-	KeyFrame[playIndex].IncRotZ = (KeyFrame[playIndex + 1].rot_pelotaZ - KeyFrame[playIndex].rot_pelotaZ) / i_max_steps;	
+	KeyFrame[playIndex].IncRotZ = (KeyFrame[playIndex + 1].rot_pelotaZ - KeyFrame[playIndex].rot_pelotaZ) / i_max_steps;
+	KeyFrame[playIndex].giroVentanaInc = (KeyFrame[playIndex + 1].giroVentana - KeyFrame[playIndex].giroVentana) / i_max_steps;		//100 frames
+	KeyFrame[playIndex].giroPuertaInc = (KeyFrame[playIndex + 1].giroPuerta - KeyFrame[playIndex].giroPuerta) / i_max_steps;		//100 frames
+					
 
 }
 
@@ -489,7 +505,15 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	puerta4.BuildGLTexture();
 	puerta4.ReleaseImage();
 
-	for(int i=0; i<MAX_FRAMES; i++)
+	frank.LoadTGA("textures/frank.tga");
+	frank.BuildGLTexture();
+	frank.ReleaseImage();
+
+	pielfrank.LoadTGA("textures/piel.tga");
+	pielfrank.BuildGLTexture();
+	pielfrank.ReleaseImage();
+
+	/*for(int i=0; i<MAX_FRAMES; i++)
 	{
 		KeyFrame[i].mov_pelotaX = 0;
 		KeyFrame[i].mov_pelotaY = 0;
@@ -503,7 +527,40 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 		KeyFrame[i].IncRotX = 0;
 		KeyFrame[i].IncRotY = 0;
 		KeyFrame[i].IncRotZ = 0;
-	}
+	}*/
+
+	KeyFrame[0].giroVentana = 0.000000; 
+	KeyFrame[0].giroPuerta = 0.000000;
+
+	KeyFrame[1].giroVentana = 78.000000;	
+	KeyFrame[1].giroPuerta = 0.000000;
+
+	KeyFrame[2].giroVentana = 78.000000; 
+	KeyFrame[2].giroPuerta = -74.000000;
+
+	KeyFrame[3].giroVentana = 78.000000; 
+	KeyFrame[3].giroPuerta = 74.000000;
+
+	KeyFrame[4].giroVentana = 78.000000; 
+	KeyFrame[4].giroPuerta = 0.000000;
+
+	KeyFrame[5].giroVentana = 78.000000; 
+	KeyFrame[5].giroPuerta = -59.000000;
+
+	KeyFrame[6].giroVentana = 78.000000; 
+	KeyFrame[6].giroPuerta = 0.000000;
+
+	KeyFrame[7].giroVentana = 4.000000; 
+	KeyFrame[7].giroPuerta = 0.000000; 
+
+	KeyFrame[8].giroVentana = -75.000000; 
+	KeyFrame[8].giroPuerta = 0.000000; 
+
+	KeyFrame[9].giroVentana = 53.000000; 
+	KeyFrame[9].giroPuerta = 0.000000;
+
+	KeyFrame[10].giroVentana = 0.000000; 
+	KeyFrame[10].giroPuerta = 0.000000;
 
 	//	posicion     (0, 2.5, 3)
 	//	hacia donde  (0, 2.5, 0)
@@ -550,20 +607,21 @@ void monito()
 {
 	glPushMatrix();
 
-		//glTranslatef(xx,yy,zz);
+	//glTranslatef(0,3,0);
 	//glNewList(1, GL_COMPILE);
 	glPushMatrix();//Pecho
 
 	glTranslatef(0.0, movCuerpo, 0.0);
 	glScalef(0.5, 0.5, 0.5);
-	fig7.prisma(2.0, 2.0, 1, plata.GLindex);
+	fig7.prisma(2.0, 2.0, 1, pielfrank.GLindex);
 
 	glPushMatrix();//Cuello
 	glTranslatef(0, 1.0, 0.0);
-	fig7.cilindro(0.25, 0.25, 15, 0);
+	fig7.cilindro(0.25, 0.25, 15, pielfrank.GLindex);
 	glPushMatrix();//Cabeza
 	glTranslatef(0, 1.0, 0);
-	fig7.esfera(0.75, 15, 15, 0);
+	glRotatef(90,0,1,0);
+	fig7.esfera(0.75, 15, 15, frank.GLindex);
 	glPopMatrix();
 	glPopMatrix();
 
@@ -571,13 +629,13 @@ void monito()
 	glTranslatef(1.25, 0.65, 0);
 	glRotatef(rotBrazoDer, 0.0, 1.0, 0.0);
 	glRotatef(movBrazoDer, 0.0, 0.0, 1.0);
-	fig7.esfera(0.5, 12, 12, 0);
+	fig7.esfera(0.5, 12, 12, pielfrank.GLindex);
 	glPushMatrix();
 	glTranslatef(0.25, 0, 0);
 	glRotatef(-25, 0, 0, 1);
 	glRotatef(-25, 1, 0, 0);
 	glTranslatef(0.75, 0, 0);
-	fig7.prisma(0.7, 1.5, 0.7, 0);
+	fig7.prisma(0.7, 1.5, 0.7, pielfrank.GLindex);
 	glPopMatrix();
 	glPopMatrix();
 
@@ -586,40 +644,40 @@ void monito()
 	glRotatef(rotBrazoIzq, 0, 1, 0);
 	glRotatef(movBrazoIzq, 0.0, 0.0, 1.0);
 
-	fig7.esfera(0.5, 12, 12, 0);
+	fig7.esfera(0.5, 12, 12, pielfrank.GLindex);
 	glPushMatrix();
 	glTranslatef(-0.25, 0, 0);
 	glRotatef(25, 0, 0, 1);
 	glRotatef(25, 1, 0, 0);
 	glTranslatef(-0.75, 0, 0);
-	fig7.prisma(0.7, 1.5, 0.7, 0);
+	fig7.prisma(0.7, 1.5, 0.7, pielfrank.GLindex);
 	glPopMatrix();
 	glPopMatrix();
 
 	glPushMatrix();//Cintura
-	glColor3f(0, 0, 1);
+	glColor3f(.349, .2078, .1215);
 	glTranslatef(0, -1.5, 0);
-	fig7.prisma(1, 2, 1, plata.GLindex);
+	fig7.prisma(1, 2, 1, pielfrank.GLindex);
 
 	//glTranslatef(0.0, movCuerpo+1.5, 0.0);
 
 
 	glPushMatrix(); //Pie Derecho -->
 	glTranslatef(0.75, -0.5, 0);
-	glRotatef(-15, 1, 0, 0);
+	//glRotatef(-15, 1, 0, 0);
 	glTranslatef(0, -0.5, 0);
-	fig7.prisma(1.0, 0.5, 1, plata.GLindex);
+	fig7.prisma(1.0, 0.5, 1, pielfrank.GLindex);
 
 	glPushMatrix();
 	glTranslatef(0, -0.5, 0);
-	glRotatef(15 + rotRodDer, 1, 0, 0);
+	//glRotatef(15 + rotRodDer, 1, 0, 0);
 	glTranslatef(0, -0.75, 0);
-	fig7.prisma(1.5, 0.5, 1, plata.GLindex);
+	fig7.prisma(1.5, 0.5, 1, pielfrank.GLindex);
 
 	glPushMatrix();
 	glTranslatef(0, -0.75, 0.3);
-	glRotatef(15 - rotRodDer, 1, 0, 0);
-	fig7.prisma(0.2, 1.2, 1.5, plata.GLindex);
+	//glRotatef(15 - rotRodDer, 1, 0, 0);
+	fig7.prisma(0.2, 1.2, 1.5, pielfrank.GLindex);
 	glPopMatrix();
 	glPopMatrix();
 	glPopMatrix();
@@ -627,20 +685,20 @@ void monito()
 
 	glPushMatrix(); //Pie Izquierdo -->
 	glTranslatef(-0.75, -0.5, 0);
-	glRotatef(-5, 1, 0, 0);
+	//glRotatef(-5, 1, 0, 0);
 	glTranslatef(0, -0.5, 0);
-	fig7.prisma(1.0, 0.5, 1, plata.GLindex);
+	fig7.prisma(1.0, 0.5, 1, pielfrank.GLindex);
 
 	glPushMatrix();
 	glTranslatef(0, -0.5, 0);
-	glRotatef(15 + rotRodIzq, 1, 0, 0);
+	//glRotatef(15 + rotRodIzq, 1, 0, 0);
 	glTranslatef(0, -0.75, 0);
-	fig7.prisma(1.5, 0.5, 1, plata.GLindex);
+	fig7.prisma(1.5, 0.5, 1, pielfrank.GLindex);
 
 	glPushMatrix();
 	glTranslatef(0, -0.75, 0.3);
-	glRotatef(15 - rotRodIzq, 1, 0, 0);
-	fig7.prisma(0.2, 1.2, 1.5, plata.GLindex);
+	//glRotatef(15 - rotRodIzq, 1, 0, 0);
+	fig7.prisma(0.2, 1.2, 1.5, pielfrank.GLindex);
 	glPopMatrix();
 	glPopMatrix();
 	glPopMatrix();
@@ -772,6 +830,9 @@ void display ( void )   // Creamos la funcion donde se dibuja
 
 			glPushMatrix(); //fachada
 				fachada();
+				glTranslatef(0,4.5,0);
+				glScalef(1,2,1);
+				monito();
 			glPopMatrix();
 			
 			glPushMatrix(); //puerta entrada y garage
@@ -882,6 +943,8 @@ void animacion()
 			rot_pelotaX += KeyFrame[playIndex].IncRotX;
 			rot_pelotaY += KeyFrame[playIndex].IncRotY;
 			rot_pelotaZ += KeyFrame[playIndex].IncRotZ;
+			giroVentana += KeyFrame[playIndex].giroVentanaInc;
+			giroPuerta += KeyFrame[playIndex].giroPuertaInc;
 
 			/*
 			posX += KeyFrame[playIndex].incX;
@@ -1078,14 +1141,6 @@ void keyboard ( unsigned char key, int x, int y )  // Create Keyboard Function
 			//yy += 0.2;
 			break;
 
-		case 'n':
-			rot_pelotaZ += 10;
-			break;
-		case 'N':
-			rot_pelotaZ -= 10;
-			//yy -= 0.2;
-			break;
-
 		case '1':
 			tamx += 0.2;
 			break;
@@ -1117,7 +1172,9 @@ void keyboard ( unsigned char key, int x, int y )  // Create Keyboard Function
 				resetElements();
 				//First Interpolation				
 				interpolation();
-
+				KeyFrame[playIndex].giroVentanaInc = (KeyFrame[playIndex + 1].giroVentana - KeyFrame[playIndex].giroVentana) / i_max_steps;		//100 frames
+				KeyFrame[playIndex].giroPuertaInc = (KeyFrame[playIndex + 1].giroPuerta - KeyFrame[playIndex].giroPuerta) / i_max_steps;		//100 frames
+				
 				play=true;
 				playIndex=0;
 				i_curr_steps = 0;
@@ -1186,25 +1243,7 @@ void keyboard ( unsigned char key, int x, int y )  // Create Keyboard Function
 		//printf("%f \n", rotRodIzq);
 		break;
 
-	case 'v':
-		rotRodDer++;
-		//printf("%f \n", rotRodIzq);
-		break;
-
-	case 'V':
-		rotRodDer--;
-		//printf("%f \n", rotRodIzq);
-		break;
-
-	case 'b':
-		rotBrazoIzq++;
-		//printf("%f \n", rotRodIzq);
-		break;
-
-	case 'B':
-		rotBrazoIzq--;
-		//printf("%f \n", rotRodIzq);
-		break;
+	
 
 	case 'g':
 		rotBrazoDer++;
@@ -1213,16 +1252,6 @@ void keyboard ( unsigned char key, int x, int y )  // Create Keyboard Function
 
 	case 'G':
 		rotBrazoDer--;
-		//printf("%f \n", rotRodIzq);
-		break;
-
-	case 'm':
-		movBrazoIzq++;
-		//printf("%f \n", rotRodIzq);
-		break;
-
-	case 'M':
-		movBrazoIzq--;
 		//printf("%f \n", rotRodIzq);
 		break;
 
@@ -1255,12 +1284,31 @@ void keyboard ( unsigned char key, int x, int y )  // Create Keyboard Function
 		giroMonito--;
 		//printf("%f \n", giroMonito);
 		break;
-
-		case 27:        // Cuando Esc es presionado...
-			exit ( 0 );   // Salimos del programa
-			break;        
-		default:        // Cualquier otra
-			break;
+	case 'v':
+	case 'V':
+		giroVentana++;
+		//printf("giroVentana: %f \n", giroVentana);
+		break;
+	case 'b':
+	case 'B':
+		giroVentana--;
+		//printf("giroVentana: %f \n", giroVentana);
+		break;
+	case 'n':
+	case 'N':
+		giroPuerta++;
+		//printf("giroPuerta: %f \n", giroPuerta);
+		break;
+	case 'm':
+	case 'M':
+		giroPuerta--;
+		//printf("giroPuerta: %f \n", giroPuerta);
+		break;
+	case 27:        // Cuando Esc es presionado...
+		exit ( 0 );   // Salimos del programa
+		break;        
+	default:        // Cualquier otra
+		break;
   }
 
   glutPostRedisplay();
@@ -1765,7 +1813,7 @@ void fachada()
 	glPopMatrix();
 	glDisable(GL_LIGHTING);
 
-	glPushMatrix();
+	glPushMatrix(); // Pared de enmedio 
 		//fig7.prisma(22,26,1,piedra.GLindex);
 		glTranslatef(-7.5,0,0);
 		fig7.prisma(22,11,1,piedra.GLindex);
@@ -1773,25 +1821,31 @@ void fachada()
 			glTranslatef(7.5,0.5,0);
 			fig7.prisma(3,4,1,piedra.GLindex);
 			glPushMatrix();
-				glTranslatef(0,4.5,0);
-				glEnable(GL_ALPHA_TEST);
-				glAlphaFunc(GL_GREATER,0.1);
-				glEnable(GL_BLEND);
-				glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-				fig7.prisma(6,4,0,ventanacuartos.GLindex); //ventana
-				glDisable(GL_ALPHA_TEST);
-				glDisable(GL_BLEND);
+				glTranslatef(-2,4.5,0);
+				glRotatef(giroVentana,0,1,0);
 				glPushMatrix();
-					glTranslatef(0,4.5,0);
-					fig7.prisma(3,4,1,piedra.GLindex);	
+					glTranslatef(2,0,0);
+					glEnable(GL_ALPHA_TEST);
+					glAlphaFunc(GL_GREATER,0.1);
+					glEnable(GL_BLEND);
+					glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+					fig7.prisma(6,4,0,ventanacuartos.GLindex); //ventana entre cuartos
+					glDisable(GL_ALPHA_TEST);
+					glDisable(GL_BLEND);
 				glPopMatrix();	
 			glPopMatrix();
 			glPushMatrix();
-				glTranslatef(0,-6.5,0);
+				glTranslatef(0,9,0);
+				fig7.prisma(3,4,1,piedra.GLindex);	
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(-2,-6.5,0);
+				glRotatef(giroPuerta,0,1,0);
+				glTranslatef(2,0,0);
 				fig7.prisma(10,4,0,puertacuartos.GLindex); //puerta entre cuartos
 			glPopMatrix();
-				glTranslatef(7.5,0,0);
-				fig7.prisma(22,11,1,piedra.GLindex); //puerta entre cuartos
+				glTranslatef(7.5,-0.5,0);
+				fig7.prisma(22,11,1,piedra.GLindex); 
 			glPushMatrix();
 			glPopMatrix();
 		glPopMatrix();
