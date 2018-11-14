@@ -254,6 +254,7 @@ CTexture fantasma;
 CTexture picado2;
 CTexture cempa;
 CTexture panmuerto;
+CTexture veladora;
 
 //CTexture tree;
 
@@ -583,6 +584,11 @@ void InitGL ( GLvoid )     // Inicializamos parametros
 	panmuerto.LoadTGA("textures/panmuerto.tga");
 	panmuerto.BuildGLTexture();
 	panmuerto.ReleaseImage();
+
+	veladora.LoadTGA("textures/veladora.tga");
+	veladora.BuildGLTexture();
+	veladora.ReleaseImage();
+
 
 	/*for(int i=0; i<MAX_FRAMES; i++)
 >>>>>>> 1ad99b980d6a1573e4d938aa7c9d270acde0291e
@@ -978,6 +984,8 @@ void ofrenda(void) {
 						glEnable(GL_ALPHA_TEST);
 						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 						fig7.prisma(4,7,0,cempa.GLindex); // flor de cempasuchil 1
+						glTranslatef(-5, -5, 1);
+						fig7.prisma(6,6,0,veladora.GLindex); // flor de cempasuchil 1
 						glDisable(GL_BLEND);
 						glDisable(GL_ALPHA_TEST);
 					glPopMatrix();//fin de panes y cosas de la base 3
